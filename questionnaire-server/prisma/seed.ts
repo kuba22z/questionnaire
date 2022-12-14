@@ -3,8 +3,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const d = await prisma.question.findMany();
-  console.log(d.at(0));
   await prisma.questionTree.upsert({
     where: { id: 1 },
     create: {
@@ -17,7 +15,7 @@ async function main() {
     where: { id: 1 },
     create: {
       id: 1,
-      text: "Ist das Gelb",
+      text: "Welche Farbe ist das?",
       nodeId: 1,
       answers: {
         createMany: {
@@ -25,6 +23,10 @@ async function main() {
             {
               nextNodeId: 2,
               text: "Gelb",
+            },
+            {
+              nextNodeId: 3,
+              text: "Blau",
             },
           ],
         },
@@ -37,7 +39,16 @@ async function main() {
     create: {
       id: 2,
       path: [1],
-      recommendation: "Hier ist die gelbe Farbe",
+      recommendation: "Es ist richtig das ist die gelbe Farbe",
+    },
+    update: {},
+  });
+  await prisma.questionTree.upsert({
+    where: { id: 3 },
+    create: {
+      id: 3,
+      path: [1],
+      recommendation: "Es ist falsch, es war eine gelbe Farbe",
     },
     update: {},
   });
