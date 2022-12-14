@@ -5,16 +5,20 @@ const prisma = new PrismaClient();
 // Resolvers define how to fetch the types defined in your schema.
 export const resolver = {
   Query: {
-    getQuestionByNodeId(
+    getQuestionNodeById(
       parent: any,
       args: { nodeId: number },
       contextValue: any,
       info: any
     ) {
-      return prisma.question.findFirst({
-        where: { nodeId: { equals: args.nodeId } },
+      return prisma.questionTree.findFirst({
+        where: { id: { equals: args.nodeId } },
         include: {
-          answers: true,
+          question: {
+            include: {
+              answers: true,
+            },
+          },
         },
       });
     },
