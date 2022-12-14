@@ -12,7 +12,10 @@ export const resolver = {
       info: any
     ) {
       return prisma.question.findFirst({
-        where: { id: { equals: args.nodeId } },
+        where: { nodeId: { equals: args.nodeId } },
+        include: {
+          answers: true,
+        },
       });
     },
     questionTree: () => prisma.questionTree.findMany(),

@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  const d = await prisma.question.findMany();
+  console.log(d.at(0));
   await prisma.questionTree.upsert({
     where: { id: 1 },
     create: {
@@ -17,15 +19,16 @@ async function main() {
       id: 1,
       text: "Ist das Gelb",
       nodeId: 1,
-    },
-    update: {},
-  });
-  await prisma.answer.upsert({
-    where: { nextNodeId_questionId: { nextNodeId: 2, questionId: 1 } },
-    create: {
-      nextNodeId: 2,
-      questionId: 1,
-      text: "Gelb",
+      answers: {
+        createMany: {
+          data: [
+            {
+              nextNodeId: 2,
+              text: "Gelb",
+            },
+          ],
+        },
+      },
     },
     update: {},
   });
