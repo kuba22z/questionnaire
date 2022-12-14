@@ -1,19 +1,27 @@
 type Query {
-    books: [Book]
+    getQuestionByNodeId(nodeId: Int!) : Question
+    questionTree: [QuestionTree!]
+    getCount: Int
+}
+type QuestionTree {
+    id: Int!
+    path: [Int!]
+    question: Question
+    recommendation: String
+    createdAt: Datetime!
+    updatedAt: Datetime!
+}
+scalar Datetime
+
+type Question {
+    id: Int!
+    nodeId: Int!
+    text: String!
+    answers: [Answer!]!
 }
 
-type Book {
-    title: String
-    author: String
-}
-
-type AddBookMutationResponse {
-    code: String!
-    success: Boolean!
-    message: String!
-    book: Book
-}
-
-type Mutation {
-    addBook(title: String, author: String): AddBookMutationResponse
+type Answer {
+    nextNodeId: Int!
+    questionId: Int!
+    text: String!
 }
