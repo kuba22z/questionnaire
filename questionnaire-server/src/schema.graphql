@@ -1,7 +1,5 @@
 type Query {
     getQuestionNodeById(nodeId: Int!) : QuestionTree
-    questionTree: [QuestionTree!]
-    getCount: Int
 }
 type QuestionTree {
     id: Int!

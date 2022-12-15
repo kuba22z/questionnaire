@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Resolvers define how to fetch the types defined in your schema.
-export const resolver = {
+export const resolvers = {
   Query: {
     getQuestionNodeById(
       parent: any,
@@ -22,7 +22,5 @@ export const resolver = {
         },
       });
     },
-    questionTree: () => prisma.questionTree.findMany(),
-    getCount: () => prisma.questionTree.count(),
   },
 };

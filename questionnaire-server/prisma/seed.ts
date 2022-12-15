@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function main() {
+export async function initializeDatabase() {
   await prisma.questionTree.upsert({
     where: { id: 1 },
     create: {
@@ -224,7 +224,7 @@ async function main() {
   });
 }
 
-main()
+initializeDatabase()
   .then(async () => {
     await prisma.$disconnect();
   })

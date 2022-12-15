@@ -12,10 +12,7 @@ import type { ApolloError } from "apollo-boost";
 export default defineComponent( {
   name: "GraphQLErrors",
   props: {
-    error: {
-      type: Object as PropType<ApolloError>,
-      required: true
-    }
+    error: Object as PropType<ApolloError>,
   },
 });
 </script>
