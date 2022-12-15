@@ -1,18 +1,23 @@
 <template>
   <div>
-    <p v-for="item in $props.error.graphQLErrors">{{item.message}}</p>
+    <p v-for="item in error.graphQLErrors">{{item.message}}</p>
   </div>
 </template>
 
 <script lang="ts">
-import { ApolloError } from "apollo-boost";
+import { defineComponent } from "vue";
+import type {PropType} from "vue"
+import type { ApolloError } from "apollo-boost";
 
-export default {
+export default defineComponent( {
   name: "GraphQLErrors",
   props: {
-    error:  ApolloError
-  }
-};
+    error: {
+      type: Object as PropType<ApolloError>,
+      required: true
+    }
+  },
+});
 </script>
 
 <style scoped>

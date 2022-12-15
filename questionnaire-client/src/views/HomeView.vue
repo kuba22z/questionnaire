@@ -4,30 +4,30 @@
     <div v-if="loading">Loading...</div>
     <div v-else-if="result">
       <div v-if="result.getQuestionNodeById.question">
-        <h2>{{ result.getQuestionNodeById.question.text }}</h2>
-        <div v-for="(item, index) in result.getQuestionNodeById.question.answers">
-          <input type="radio" :key="index" :id="index" :value="item.nextNodeId" name="answer"
-                 v-model="pickedNextNodeId" />
-          <label :for="index">{{ item.text }}</label>
-        </div>
+          <Questionnaire :question="result.getQuestionNodeById.question" v-model:picked-next-node-id="pickedNextNodeId"/>
       </div>
       <div v-else>
-        {{ result.getQuestionNodeById.recommendation }}
+        Our recommendation: {{ result.getQuestionNodeById.recommendation }}
+      </div>
+
+      <div>
+      <input type="submit" value="next Question">
+      <input type="button" id="back" @click="fetchPrevQuestion" value="previous Question" />
+      <br>
+      <input type="button" id="back" @click="fetchNextQuestion(1)" value="go to first Question" />
       </div>
     </div>
-    <input type="submit" value="next Question">
-    <input type="button" id="back" @click="fetchPrevQuestion" value="previous Question" />
-    <br>
-    <input type="button" id="back" @click="fetchNextQuestion(1)" value="go to first Question" />
+    <div v-else>Problems establishing a connection</div>
 
   </form>
 </template>
 
 <script lang="ts">
-import { useCounterStore } from "@/stores/counter";
 import gql from "graphql-tag";
 import { useQuery } from "@vue/apollo-composable";
 import GraphQLErrors from "@/components/GraphQLErrors.vue";
+import Questionnaire from "@/components/Questionnaire.vue";
+import { defineComponent } from "vue";
 
 const QUESTION_NODE_BY_ID_QUERY = gql`
 query GetQuestionNodeById($nodeId: Int!) {
@@ -44,11 +44,10 @@ query GetQuestionNodeById($nodeId: Int!) {
 }
 `;
 
-export default {
+export default defineComponent({
   name: "Home",
-  components: { GraphQLErrors },
+  components: { Questionnaire, GraphQLErrors },
   setup() {
-    const counter = useCounterStore();
     const { result, loading, error, fetchMore } = useQuery(QUESTION_NODE_BY_ID_QUERY, { "nodeId": 1 });
     const pickedNextNodeId = null;
     const nodeIdsPath = [1];
@@ -67,6 +66,7 @@ export default {
         }
       );
     };
+
     const fetchPrevQuestion = () => {
       nodeIdsPath.pop();
       fetchNextQuestion(nodeIdsPath[nodeIdsPath.length - 1]);
@@ -76,14 +76,13 @@ export default {
       result,
       loading,
       error,
-      counter,
       fetchNextQuestion,
       fetchPrevQuestion,
       pickedNextNodeId,
       nodeIdsPath
     };
-  }
-};
+  },
+});
 </script>
 
 <style scoped>
