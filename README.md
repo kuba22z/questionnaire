@@ -1,7 +1,7 @@
 # questionnaire
 Coding Challenge from FoxBase 
-
-
+By Jakub Naumowicz
+## Project Setup
 ### Install Dependencies
 ```shell
 npm install
