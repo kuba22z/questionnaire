@@ -21,9 +21,12 @@ export class RequestQuestion {
     }
   `;
 
-  constructor(variables: {}, nodeIdsContainer: number[]) {
-    this.nodeIdsContainer = nodeIdsContainer;
-    this.response = useQuery(this.QUESTION_NODE_BY_ID_QUERY, variables);
+  constructor(variables: { nodeId: number }) {
+    this.nodeIdsContainer = [variables.nodeId];
+    this.response = useQuery<{ nodeId: number }>(
+      this.QUESTION_NODE_BY_ID_QUERY,
+      variables
+    );
   }
 
   fetchNext = (nodeId: number | null) => {
